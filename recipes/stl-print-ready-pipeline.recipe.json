@@ -1,0 +1,82 @@
+{
+  "starnetRecipe": 1,
+  "name": "STL Print-Ready Pipeline",
+  "emoji": "\u26ed",
+  "tagline": "Brief or STL in, print-ready file + specs out",
+  "blurb": "Analyzes or fixes an STL, or designs new pieces matching a whole folder of reference STLs, then produces a validated, QA-approved print-ready file with specs, analysis, validation and renders.",
+  "accent": "#7bc88a",
+  "tags": { "general": 1 },
+  "category": "developer",
+  "cadence": null,
+  "gear": ["cabinet", "workbench"],
+  "skills": ["stl-mesh-analysis"],
+  "params": [
+    {
+      "key": "project_name",
+      "label": "Project name",
+      "placeholder": "short slug used for file names, e.g. goblin-warband",
+      "required": true,
+      "default": "",
+      "type": "text"
+    },
+    {
+      "key": "user_brief",
+      "label": "Brief",
+      "placeholder": "what the part is for, key constraints, how many pieces, style notes",
+      "required": true,
+      "default": "",
+      "type": "text"
+    },
+    {
+      "key": "reference_stl",
+      "label": "Reference STL folder",
+      "placeholder": "a single STL to analyze/fix, or a whole folder of STLs to match in style",
+      "required": false,
+      "default": "",
+      "type": "folder"
+    },
+    {
+      "key": "reference_images",
+      "label": "Reference images",
+      "placeholder": "photos/sketches if no STL exists",
+      "required": false,
+      "default": "",
+      "type": "file"
+    },
+    {
+      "key": "printer_bed_mm",
+      "label": "Printer bed (mm)",
+      "placeholder": "e.g. 250x250x250",
+      "required": false,
+      "default": "250x250x250",
+      "type": "text"
+    },
+    {
+      "key": "material",
+      "label": "Material",
+      "placeholder": "e.g. PLA",
+      "required": false,
+      "default": "PLA",
+      "type": "text"
+    }
+  ],
+  "task": "Produce print-ready STL(s) for project {project_name}: {user_brief}. Printer bed: {printer_bed_mm} mm, material: {material}. reference_stl is {reference_stl} — if it is a single STL, consult the stl-mesh-analysis skill to analyze and fix it; if it is a folder of STLs, consult the same skill to extract a style profile (scale, proportions, base type, level of detail) and design new pieces that match it. If no STL reference exists, design from the brief and any reference_images ({reference_images}), marking measured fields UNKNOWN where they cannot be derived. Always write the analysis (or style analysis) report as stl_pipeline/reports/analysis_{project_name}.md regardless of which mode was used, so downstream steps and acceptance checks find it at the same path. Write the spec, analysis, validation and a QA feedback note that only states APPROVED once the design genuinely passes review, plus render preview PNGs. Follow stl_pipeline/ naming conventions exactly for every output file.",
+  "steps": [
+    "Resolve reference_stl: single file, folder, or absent.",
+    "Single file -> run stl-mesh-analysis on it and write stl_pipeline/reports/analysis_{project_name}.md.",
+    "Folder -> run stl-mesh-analysis across the set (sampled at 25 max), extract the STYLE PROFILE, and write it to the same stl_pipeline/reports/analysis_{project_name}.md path.",
+    "Neither -> summarize reference_images/brief into the same report format, marking UNKNOWN fields.",
+    "Write stl_pipeline/specs/spec_{project_name}.md from the brief and the analysis/style profile.",
+    "Design or fix the model(s); export stl_pipeline/design/output/design_{project_name}_v1.stl.",
+    "Validate the model(s) against printer_bed_mm and material; write stl_pipeline/reports/validation_{project_name}.md.",
+    "Render preview PNGs into stl_pipeline/renders/.",
+    "QA review the finished design(s) against the style profile when one exists; write stl_pipeline/reports/qa_feedback_{project_name}.md and only write APPROVED once it genuinely passes."
+  ],
+  "acceptance": [
+    { "type": "artifact_exists", "path": "stl_pipeline/design/output/design_{project_name}_v1.stl", "label": "print-ready STL exists" },
+    { "type": "artifact_exists", "path": "stl_pipeline/specs/spec_{project_name}.md", "label": "spec written" },
+    { "type": "artifact_exists", "path": "stl_pipeline/reports/analysis_{project_name}.md", "label": "analysis or style report written" },
+    { "type": "artifact_exists", "path": "stl_pipeline/reports/validation_{project_name}.md", "label": "validation report written" },
+    { "type": "artifact_contains", "path": "stl_pipeline/reports/qa_feedback_{project_name}.md", "text": "APPROVED", "label": "QA approved" }
+  ]
+}
