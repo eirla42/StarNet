@@ -1,3 +1,8 @@
+---
+name: stl-mesh-analysis
+description: Analyzes STL meshes with trimesh (bounding box, volume, watertightness, defects) and writes a markdown report; falls back to summarizing reference material when no STL is present.
+---
+
 # Skill: STL Mesh Analysis
 
 Trigger: an STL file is present in stl_pipeline/input/, or a design brief with

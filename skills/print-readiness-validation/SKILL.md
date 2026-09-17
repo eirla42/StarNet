@@ -1,3 +1,8 @@
+---
+name: print-readiness-validation
+description: Validates a generated STL against the spec for watertightness, geometry sanity, printability, bed-size fit, and minimum feature constraints, then writes actionable fix notes for the designer.
+---
+
 # Skill: Automated Print-Readiness Validation
 
 Trigger: a new STL appears in stl_pipeline/design/output/.

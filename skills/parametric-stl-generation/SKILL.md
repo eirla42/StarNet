@@ -1,3 +1,8 @@
+---
+name: parametric-stl-generation
+description: Creates and exports parametric CAD models from an approved design spec, iterating versions with changelog notes and confirming that a valid STL was generated.
+---
+
 # Skill: Parametric STL Generation
 
 Trigger: an approved spec exists at stl_pipeline/specs/spec_*.md, or a

@@ -1,3 +1,8 @@
+---
+name: design-spec-writing
+description: Reads the mesh analysis and design brief to produce a clear, implementation-agnostic manufacturing specification with dimensions, tolerances, material assumptions, print constraints, and acceptance criteria.
+---
+
 # Skill: STL Design Specification Writing
 
 Trigger: an analysis report exists at stl_pipeline/reports/analysis_*.md.

@@ -1,3 +1,8 @@
+---
+name: visual-qa-signoff
+description: Renders the validated STL from multiple angles and checks it against the spec and reference inputs to issue an APPROVED or REJECTED final QA sign-off.
+---
+
 # Skill: Visual QA & Final Sign-off
 
 Trigger: stl_pipeline/reports/validation_<name>.md exists with an overall
